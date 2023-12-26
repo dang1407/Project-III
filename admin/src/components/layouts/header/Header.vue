@@ -32,16 +32,10 @@
             </w-list>
           </div>
         </div> -->
-        <Menu :datas="menu" menu-position="top-[100%] right-[4px]">
-          <template #menu_target>
-            <div class="user__thumnail">
-              <img src="@/assets/imgs/anhthe.jpg" alt="" />
-            </div>
-          </template>
-          <template #menu_item="{ data }">
-            {{ data.label }}
-          </template>
-        </Menu>
+
+        <div class="user__thumnail">
+          <img src="@/assets/imgs/anhthe.jpg" alt="" />
+        </div>
       </div>
     </div>
     <!-- </div> -->
@@ -52,7 +46,6 @@
 import "./header.css";
 import { ref } from "vue";
 import List from "../../base/list/List.vue";
-import Menu from "../../base/menu/Menu.vue";
 const props = defineProps({});
 const menu = ref([
   {

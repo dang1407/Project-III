@@ -5,6 +5,7 @@
     :style="style"
     :fixed-headers="fixedHeaders"
     :pagination="pagination"
+    resizable-columns
   >
     <template #header-label="{ label, index }">
       <slot name="header-label" :label="label" :index="index">

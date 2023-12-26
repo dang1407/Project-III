@@ -62,10 +62,10 @@
             </span>
             <span
               v-else-if="label == 'Chức năng'"
-              class="flex justify-center w-[100%]"
+              class="flex justify-center w-[100%] pl-[8px]"
               >{{ label }}</span
             >
-            <span v-else>{{ label }}</span>
+            <span v-else class="pl-[8px]">{{ label }}</span>
             <!-- {{ label }} -->
           </template>
           <template #item="{ item, index, select, classes }">
@@ -99,13 +99,13 @@
                   ></w-checkbox>
                 </div>
 
-                <div v-else-if="header.key == 'Gender'">
+                <div v-else-if="header.key == 'Gender'" class="pl-[8px]">
                   {{
                     helperStore.convertGenderDBToGenderUser(item[header.key])
                   }}
                 </div>
 
-                <div v-else-if="header.key == 'DateOfBirth'">
+                <div v-else-if="header.key == 'DateOfBirth'" class="pl-[8px]">
                   {{
                     helperStore.covertDateDBToDatePickerDate(
                       item[header.key],
@@ -127,7 +127,9 @@
                     </div>
                   </div>
                 </div>
-                <div v-else>{{ item[header.key] || "" }}</div>
+                <div v-else class="pl-[8px]">
+                  {{ item[header.key] || "" }}
+                </div>
                 <!-- <div>{{ item[header.key] || "" }}</div> -->
               </td>
             </tr>

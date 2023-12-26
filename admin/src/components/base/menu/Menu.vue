@@ -99,6 +99,8 @@ function activeMenu() {
   position: absolute;
   display: none;
   padding-top: 8px;
+  z-index: 100;
+  background: #fff;
 }
 
 /* Item trong droplist */

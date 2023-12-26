@@ -3,6 +3,7 @@ import axios from "@/js/axios";
 import { useNotificationStore } from "@/stores/NotificationStore";
 import { useHelperStore } from "@/stores/HelperStore";
 import { resource } from "./EmployeeResource";
+import { useUserStore } from "@/stores/UserStore";
 export const useEmployeeStore = defineStore("employeeStore", {
   state: () => ({
     headers: [
@@ -17,12 +18,17 @@ export const useEmployeeStore = defineStore("employeeStore", {
         label: "Mã nhân viên",
         key: "EmployeeCode",
         width: "200px",
+        reasizable: true,
       },
       { label: "Họ và tên", key: "FullName", width: "200px" },
       { label: "Ngày sinh", key: "DateOfBirth", width: "220px" },
       { label: "Giới tính", key: "Gender", width: "100px" },
       { label: "Đơn vị", key: "DepartmentName", width: "150px" },
-      { label: "Chức danh", key: "PositionName", width: "150px" },
+      {
+        label: "Chức danh",
+        key: "PositionName",
+        width: "250px",
+      },
       { label: "Số tài khoản", key: "BankAccount", width: "250px" },
       { label: "Tên ngân hàng", key: "BankName", width: "150px" },
       { label: "Chi nhánh ngân hàng", key: "BankBranch", width: "210px" },
@@ -43,6 +49,7 @@ export const useEmployeeStore = defineStore("employeeStore", {
     end: 50,
     helperStore: useHelperStore(),
     notificationStore: useNotificationStore(),
+    userStore: useUserStore(),
     resourceLanguage: resource[useHelperStore().languageCode],
 
     // Các biến phục vụ việc chọn nhân viên trên bảng
@@ -64,7 +71,12 @@ export const useEmployeeStore = defineStore("employeeStore", {
       try {
         this.notificationStore.showLoading();
         const response = await axios.get(
-          `Employees?page=${this.page}&pageSize=${this.pageSize}&employeeProperty=${this.employeeProperty}`
+          `Employees?page=${this.page}&pageSize=${this.pageSize}&employeeProperty=${this.employeeProperty}`,
+          {
+            headers: {
+              Authorization: `Bearer ${this.userStore.accessToken}`,
+            },
+          }
         );
         this.employeesData = response.data.data;
         this.numEmployees = response.data.countEmployees;

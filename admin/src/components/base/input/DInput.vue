@@ -41,7 +41,7 @@
       <input
         :tabindex="tabindex"
         ref="inputTextRef"
-        type="text"
+        :type="type"
         :class="{
           input__disabled: disabled,
           input__text: icon?.iconPosition != 'left',
@@ -112,6 +112,10 @@ const props = defineProps({
   focus: {
     type: Boolean,
   },
+  type: {
+    type: String,
+    default: "text",
+  },
 });
 
 defineExpose({
@@ -175,7 +179,10 @@ function setTooltip(on) {
 
 onMounted(() => {
   if (props.focus) {
-    inputTextRef.value.focus();
+    setTimeout(() => {
+      inputTextRef.value.select();
+      inputTextRef.value.focus();
+    }, 200);
     // console.log(inputTextRef);
   }
 });
