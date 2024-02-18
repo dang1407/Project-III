@@ -1,0 +1,17 @@
+G:\Code\VisualStudio\WebAPI\WebAPI.Infrastructure\bin\Release\net8.0\WebAPI.Infrastructure.deps.json
+G:\Code\VisualStudio\WebAPI\WebAPI.Infrastructure\bin\Release\net8.0\WebAPI.Infrastructure.dll
+G:\Code\VisualStudio\WebAPI\WebAPI.Infrastructure\bin\Release\net8.0\WebAPI.Infrastructure.pdb
+G:\Code\VisualStudio\WebAPI\WebAPI.Infrastructure\bin\Release\net8.0\WebAPI.Application.dll
+G:\Code\VisualStudio\WebAPI\WebAPI.Infrastructure\bin\Release\net8.0\WebAPI.Domain.dll
+G:\Code\VisualStudio\WebAPI\WebAPI.Infrastructure\bin\Release\net8.0\WebAPI.Application.pdb
+G:\Code\VisualStudio\WebAPI\WebAPI.Infrastructure\bin\Release\net8.0\WebAPI.Domain.pdb
+G:\Code\VisualStudio\WebAPI\WebAPI.Infrastructure\obj\Release\net8.0\WebAPI.Infrastructure.csproj.AssemblyReference.cache
+G:\Code\VisualStudio\WebAPI\WebAPI.Infrastructure\obj\Release\net8.0\WebAPI.Infrastructure.GeneratedMSBuildEditorConfig.editorconfig
+G:\Code\VisualStudio\WebAPI\WebAPI.Infrastructure\obj\Release\net8.0\WebAPI.Infrastructure.AssemblyInfoInputs.cache
+G:\Code\VisualStudio\WebAPI\WebAPI.Infrastructure\obj\Release\net8.0\WebAPI.Infrastructure.AssemblyInfo.cs
+G:\Code\VisualStudio\WebAPI\WebAPI.Infrastructure\obj\Release\net8.0\WebAPI.Infrastructure.csproj.CoreCompileInputs.cache
+G:\Code\VisualStudio\WebAPI\WebAPI.Infrastructure\obj\Release\net8.0\WebAPI.Infrastructure.csproj.CopyComplete
+G:\Code\VisualStudio\WebAPI\WebAPI.Infrastructure\obj\Release\net8.0\WebAPI.Infrastructure.dll
+G:\Code\VisualStudio\WebAPI\WebAPI.Infrastructure\obj\Release\net8.0\refint\WebAPI.Infrastructure.dll
+G:\Code\VisualStudio\WebAPI\WebAPI.Infrastructure\obj\Release\net8.0\WebAPI.Infrastructure.pdb
+G:\Code\VisualStudio\WebAPI\WebAPI.Infrastructure\obj\Release\net8.0\ref\WebAPI.Infrastructure.dll

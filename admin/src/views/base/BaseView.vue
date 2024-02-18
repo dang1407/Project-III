@@ -14,9 +14,10 @@
 
 <style lang="scss">
 .bv__container {
+  width: 100%;
   padding: 24px;
   background-color: #e6e6e6;
-  height: calc(100vh - 48px);
+  height: calc(100vh);
 }
 
 .bv__body {
@@ -24,7 +25,7 @@
   border-radius: 4px;
   background-color: #fff;
   margin-top: 24px;
-  overflow: hidden;
+  overflow-y: scroll;
 }
 
 h1 {

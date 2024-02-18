@@ -3,8 +3,16 @@ import { defineStore } from "pinia";
 export const useNotificationStore = defineStore("notificationStore", {
   state: () => ({
     isShowDialog: false,
+    dialogTypeEnum: {},
+    dialogType: {},
     isLoading: false,
-    selectedEnum: -1,
+    loadingMessage: "",
+    selectedValue: -1,
+    selectedEnum: {
+      Cancel: 0,
+      Not: 1,
+      Accept: 2,
+    },
     dialogContent: {
       Title: "",
       Message: "",
@@ -12,19 +20,27 @@ export const useNotificationStore = defineStore("notificationStore", {
     },
     acceptButtonThemeClass: "",
     toastContents: [],
+    cancelCallBack: "",
   }),
   getters: {
     getSelection() {
-      return this.selectedEnum;
+      return this.selectedValue;
     },
   },
   actions: {
-    showLoading() {
+    /**
+     * Hàm mở loading, có thể truyền một message vào cùng, message này sẽ được giải
+     * phóng ở hàm hideLoading
+     * @param {string} message
+     */
+    showLoading(message) {
       this.isLoading = true;
+      this.loadingMessage = message;
     },
 
     hideLoading() {
       this.isLoading = false;
+      this.loadingMessage = "";
     },
 
     /**
@@ -51,7 +67,8 @@ export const useNotificationStore = defineStore("notificationStore", {
      */
     clickCancel() {
       this.isShowDialog = false;
-      this.selectedEnum = 0;
+      this.selectedValue = 0;
+      // this.cancelCallBack();
     },
 
     /**
@@ -60,7 +77,7 @@ export const useNotificationStore = defineStore("notificationStore", {
      */
     clickNot() {
       this.isShowDialog = false;
-      this.selectedEnum = 1;
+      this.selectedValue = 1;
     },
     /**
      * Hàm xử lý khi nhấn accept trên dialog
@@ -68,7 +85,7 @@ export const useNotificationStore = defineStore("notificationStore", {
      */
     clickAccept() {
       this.isShowDialog = false;
-      this.selectedEnum = 2;
+      this.selectedValue = 2;
     },
 
     /**
@@ -90,6 +107,10 @@ export const useNotificationStore = defineStore("notificationStore", {
       if (this.toastContents.length > 0) {
         this.toastContents.shift();
       }
+    },
+
+    setCancelCallBack(callBack) {
+      this.cancelCallBack = callBack;
     },
   },
 });

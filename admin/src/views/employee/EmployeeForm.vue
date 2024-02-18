@@ -1,9 +1,9 @@
 <template>
-  <DForm>
+  <DForm :title="title" @onClose="emits('onClose')">
     <template #form_body>
       <!-- Form Header -->
       <div class="w-[800px]">
-        <div class="flex justify-between items-center mb-[16px]">
+        <!-- <div class="flex justify-between items-center mb-[16px]">
           <h1 class="text-[24px]">{{ title }}</h1>
           <div class="flex">
             <w-tooltip bottom>
@@ -29,7 +29,7 @@
               Đóng (ESC)
             </w-tooltip>
           </div>
-        </div>
+        </div> -->
 
         <!-- Form Body -->
         <div>
@@ -51,6 +51,7 @@
                 <div class="flex">
                   <div class="pr-[4px] w-[30%]">
                     <DInput
+                      ref="employeeCodeInput"
                       label="Mã nhân viên"
                       :required="true"
                       v-model="employeeFormData.EmployeeCode"
@@ -86,10 +87,45 @@
             <div class="flex">
               <div class="flex justify-between px-[8px] w-[50%]">
                 <div class="pr-[4px]">
-                  <DInput label="Ngày sinh"></DInput>
+                  <DDatePicker
+                    label="Ngày sinh"
+                    v-model="employeeFormData.DateOfBirth"
+                  ></DDatePicker>
                 </div>
                 <div class="pl-[4px]">
-                  <DInput label="Giới tính"></DInput>
+                  <div class="font-bold">
+                    <span>Giới tính</span>
+                  </div>
+                  <div class="flex h-[36px]">
+                    <div class="flex items-center mr-[4px]">
+                      <DRadio
+                        name="Gender"
+                        v-model="employeeFormData.Gender"
+                        value="1"
+                        size="24px"
+                      ></DRadio>
+                      <span class="ml-[4px]">Nam</span>
+                    </div>
+
+                    <div class="flex items-center mr-[4px]">
+                      <DRadio
+                        name="Gender"
+                        v-model="employeeFormData.Gender"
+                        value="0"
+                        size="24px"
+                      ></DRadio>
+                      <span class="ml-[4px]">Nữ</span>
+                    </div>
+                    <div class="flex items-center mr-[4px]">
+                      <DRadio
+                        name="Gender"
+                        v-model="employeeFormData.Gender"
+                        value="2"
+                        size="24px"
+                      ></DRadio>
+                      <span class="ml-[4px]">Khác</span>
+                    </div>
+                  </div>
                 </div>
               </div>
               <div class="flex justify-between px-[8px] w-[50%]">
@@ -101,10 +137,10 @@
                   ></DInput>
                 </div>
                 <div class="pl-[4px]">
-                  <DInput
+                  <DDatePicker
                     label="Ngày cấp"
                     v-model="employeeFormData.PICreatedDate"
-                  ></DInput>
+                  ></DDatePicker>
                 </div>
               </div>
             </div>
@@ -159,15 +195,22 @@
 
               <div class="flex justify-between mt-[32px]">
                 <div>
-                  <DButton bg-color="white">Hủy</DButton>
+                  <w-tooltip right>
+                    <template #activator="{ on }">
+                      <DButton bg-color="white" v-on="on">Hủy</DButton>
+                    </template>
+                    Hủy ()
+                  </w-tooltip>
                 </div>
 
                 <div class="flex">
                   <div class="mr-[8px]">
-                    <DButton>Cất</DButton>
+                    <DButton @click="employeeStore.createNewOneEmployee"
+                      >Tạo</DButton
+                    >
                   </div>
                   <div class="ml-[8px]">
-                    <DButton>Cất và thêm</DButton>
+                    <DButton>Tạo và thêm mới</DButton>
                   </div>
                 </div>
               </div>
@@ -180,9 +223,10 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { storeToRefs } from "pinia";
 import { useEmployeeStore } from "./EmployeeStore";
+import { useNotificationStore } from "@/stores/NotificationStore";
 import DForm from "@/components/base/form/DForm.vue";
 const emits = defineEmits(["onClose"]);
 const props = defineProps({
@@ -191,29 +235,41 @@ const props = defineProps({
   },
 });
 
-// const employeeStore = useEmployeeStore();
-// const { employeeFormData } = storeToRefs(employeeStore);
-const employeeCode = ref("");
-const employeeFormData = ref({
-  EmployeeCode: false,
-  FullName: false,
-  Gender: false,
-  GenderName: false,
-  DateOfBirth: false,
-  PositionName: false,
-  PhoneNumber: false,
-  Email: false,
-  Address: false,
-  DepartmentName: false,
-  PersonalIdentification: false,
-  PIDateCreated: false,
-  PIPlaceCreated: false,
-  LandLinePhone: false,
-  Mobile: false,
-  BankName: false,
-  BankBranchName: false,
-  BankAccountNumber: false,
-  // departmentId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+const employeeStore = useEmployeeStore();
+const { employeeFormData } = storeToRefs(employeeStore);
+
+const notificationStore = useNotificationStore();
+const { isShowDialog } = storeToRefs(notificationStore);
+
+const formTitle = ref("Thông tin nhân viên");
+// const employeeCode = ref("");
+// const employeeFormData = ref({
+//   EmployeeCode: false,
+//   FullName: false,
+//   Gender: false,
+//   GenderName: false,
+//   DateOfBirth: false,
+//   PositionName: false,
+//   PhoneNumber: false,
+//   Email: false,
+//   Address: false,
+//   DepartmentName: false,
+//   PersonalIdentification: false,
+//   PIDateCreated: false,
+//   PIPlaceCreated: false,
+//   LandLinePhone: false,
+//   Mobile: false,
+//   BankName: false,
+//   BankBranchName: false,
+//   BankAccountNumber: false,
+//   // departmentId: "3fa85f64-5717-4562-b3fc-2c963f66afa6",
+// });
+
+const employeeCodeInput = ref();
+
+onMounted(async () => {
+  const response = await employeeStore.getNewEmployeeCode();
+  employeeCodeInput.value?.setInputValue(response.data);
 });
 </script>
 

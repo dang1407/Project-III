@@ -18,7 +18,7 @@
               'item--selected':
                 item.label == inputValue || hoverIndexOption == index,
             }"
-            @click="selectOption(item.label)"
+            @click="selectOption(handleOptionWhenSelect(item.label))"
             @mouseenter="hoverIndexOption = index"
           >
             <slot name="menu_item" :data="item">
@@ -40,6 +40,9 @@ const props = defineProps({
     type: String,
   },
   initValue: {},
+  filterSelectOption: {
+    type: Function,
+  },
 });
 
 const inputValue = ref(props.initValue);
@@ -87,6 +90,13 @@ function prevItem() {
 function activeMenu() {
   hoverIndexOption.value = 0;
   showList.value = !showList.value;
+}
+
+function handleOptionWhenSelect(option) {
+  if (props.filterSelectOption) {
+    return props.filterSelectOption(option);
+  }
+  return option;
 }
 </script>
 

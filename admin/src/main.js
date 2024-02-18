@@ -8,11 +8,14 @@ import App from "./App.vue";
 // import "wave-ui/dist/wave-ui.css";
 import WaveUI from "wave-ui/src/wave-ui";
 import vClickOutside from "click-outside-vue3";
+
 // Các component dùng chung
 import Button from "@/components/base/button/Button.vue";
-import DCheckBox from "@/components/base/checkbox/DCheckBox.vue";
-import Table from "@/components/base/table/Table.vue";
+import DCheckBox from "@/components/base/input/DCheckBox.vue";
 import DInput from "@/components/base/input/DInput.vue";
+import DRadio from "@/components/base/input/DRadio.vue";
+import DDatePicker from "@/components/base/datepicker/DDatePicker.vue";
+import Table from "@/components/base/table/Table.vue";
 import DIcon from "@/components/base/icon/DIcon.vue";
 import DComboBox from "@/components/base/combobox/DComboBox.vue";
 import Menu from "@/components/base/menu/Menu.vue";
@@ -41,6 +44,8 @@ app.component("DComboBox", DComboBox);
 app.component("DMenu", Menu);
 app.component("DCheckBox", DCheckBox);
 app.component("DForm", DForm);
+app.component("DRadio", DRadio);
+app.component("DDatePicker", DDatePicker);
 app.config.errorHandler = (err, vm, info) => {
   // handle error
   // `info` is a Vue-specific error info, e.g. which lifecycle hook

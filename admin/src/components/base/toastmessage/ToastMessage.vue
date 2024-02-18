@@ -5,7 +5,12 @@
         {{ toastMesContent?.Icon }}
       </w-icon>
     </div>
-    <div class="toast-message-desc">
+    <div
+      :class="{
+        'has-option-action': toastMesContent?.OptionAction,
+        'not-has-option-action': !toastMesContent?.OptionAction,
+      }"
+    >
       <span class="toast-message-status" :class="toastMesContent?.TextClass">
         {{ toastMesContent?.Status }}
       </span>
@@ -79,5 +84,13 @@ function clickClose() {
   background-position: -593px -145px;
   width: 22px;
   height: 23px;
+}
+
+.has-option-action {
+  width: calc(100% - 124px);
+}
+
+.not-has-option-action {
+  width: calc(100% - 60px);
 }
 </style>

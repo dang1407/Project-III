@@ -50,12 +50,12 @@
           @keydown.down="nextItem"
           @keydown.up="prevItem"
           @keydown.enter="
-            selectOption(currentListOptions[hoverIndexOption - 1].label)
+            selectOption(currentListOptions[hoverIndexOption - 1])
           "
           v-model="inputValue"
         />
         <div
-          class="icons__container cursor-pointer"
+          class="icons__container cursor-pointer hover:bg-[#e6e6e6]"
           v-show="icon?.iconPosition == 'right'"
         >
           <w-icon :class="`!text-[20px] text-[#000] hover:text-[#2ca012] `"
@@ -67,7 +67,7 @@
     <div
       v-show="showList"
       :class="menuPosition"
-      class="droplist__container bg-[#fff] w-[100%]"
+      class="droplist__container bg-[#fff] w-[100%] relative z-10"
     >
       <w-list
         :items="currentListOptions"
@@ -78,14 +78,22 @@
           <div
             class="droplist__item"
             :class="{
-              'item--selected':
-                item.label == inputValue || index == hoverIndexOption,
+              'item--selected': item[labelKey] == inputValue,
+              'item--hover': index == hoverIndexOption,
             }"
-            @click="selectOption(item.label)"
+            @click="selectOption(item)"
             @mouseenter="hoverIndexOption = index"
           >
             <slot name="menu_item" :data="item">
-              {{ item.label }}
+              <div class="flex items-center justify-between w-[100%] pr-[4px]">
+                {{ item[labelKey] }}
+                <DIcon
+                  v-show="item[labelKey] == inputValue"
+                  iconName="mdi mdi-check"
+                  iconSize="16px"
+                  iconColor="#39ac66"
+                ></DIcon>
+              </div>
             </slot>
           </div>
         </template>
@@ -104,7 +112,7 @@
             @mouseenter="hoverIndexOption = index"
           >
             <slot name="menu_item" :data="item">
-              {{ item.label }}
+              {{ item[labelKey] }}
             </slot>
           </div>
         </template></w-list
@@ -114,7 +122,7 @@
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onMounted, reactive } from "vue";
 const emits = defineEmits(["update:modelValue", "onOptionChanged"]);
 const props = defineProps({
   activeColor: {
@@ -153,6 +161,11 @@ const props = defineProps({
     type: Number,
   },
   initValue: {},
+  /**
+   *Truyền vào prop: listOptions dạng [{label: 'label', value: 'value'}]
+   *Label là giá trị hiển thị lên cho người dùng, value là giá trị sử dụng để
+   *v-model hoặc tính toán, sử dụng khác
+   */
   listOptions: {
     type: Array,
   },
@@ -168,7 +181,17 @@ const props = defineProps({
   menuPosition: {
     type: String,
   },
+  labelKey: {
+    type: String,
+    default: "label",
+  },
+  valueKey: {
+    type: String,
+    default: "value",
+  },
 });
+
+const propsReactive = reactive(props);
 
 const selectedOption = ref(props.initValue);
 
@@ -214,6 +237,7 @@ function focusInput(e) {
   e.target.focus();
   isActive.value = true;
   hoverIndexOption.value = 0;
+  showList.value = true;
 }
 
 /**
@@ -231,10 +255,11 @@ function toggleList() {
  *
  * Created by: nkdang (12/12/2023)
  */
-function selectOption(option) {
-  emits("update:modelValue");
-  emits("onOptionChanged", option);
-  inputValue.value = option;
+function selectOption(item) {
+  // console.log(item);
+  emits("update:modelValue", item[props.valueKey]);
+  emits("onOptionChanged", item[props.valueKey]);
+  inputValue.value = item[props.labelKey];
   showList.value = false;
 }
 
@@ -282,6 +307,33 @@ function onClickOutSide() {
   showList.value = false;
   isActive.value = false;
 }
+
+onMounted(() => {
+  // console.log("Mounted");
+  // console.log(props, props.modelValue);
+  if (props.modelValue) {
+    // console.log(props.modelValue);
+    for (let i = 0; i < props.listOptions.length; i++) {
+      if (props.listOptions[i].value == props.modelValue) {
+        inputValue.value = props.listOptions[i].label;
+      }
+    }
+    // console.log(inputValue.value);
+  }
+});
+
+// watch(
+//   () => propsReactive.modelValue,
+//   (newValue) => {
+//     console.log(newValue);
+//     for (let i = 0; i < props.listOptions.length; i++) {
+//       if ((props.listOptions[i].value = props.modelValue)) {
+//         inputValue.value = props.listOptions[i].label;
+//       }
+//     }
+//     console.log(inputValue.value);
+//   }
+// );
 </script>
 
 <style scoped>
@@ -339,9 +391,12 @@ function onClickOutSide() {
 }
 
 .item--selected {
-  background-color: var(--item-bg-color);
+  color: var(--button-bg-hover-color);
 }
 
+.item--hover {
+  background-color: var(--item-bg-color);
+}
 .w-list {
   box-shadow: 0 3px 1px -2px rgba(0, 0, 0, 0.2), 0 2px 2px 0 rgba(0, 0, 0, 0.15),
     0 1px 5px 0 rgba(0, 0, 0, 0.15);

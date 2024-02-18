@@ -16,6 +16,7 @@ export const useHelperStore = defineStore("helperStore", {
     },
 
     convertGenderDBToGenderUser(gender) {
+      // console.log(gender);
       return baseEnum[this.language].Gender[gender];
     },
 
@@ -42,6 +43,26 @@ export const useHelperStore = defineStore("helperStore", {
       } else {
         return "";
       }
+    },
+
+    processNullDataInObject(obj) {
+      for (let key in obj) {
+        if (
+          !obj[key] &&
+          !key.toString().includes("Date") &&
+          !key.toString().includes("By")
+        ) {
+          obj[key] = "Không xác định";
+        }
+      }
+      if (!obj.CreatedDate) {
+        obj.CreatedDate = new Date().toISOString().split("T")[0];
+      }
+
+      if (!obj.CreatedBy) {
+        obj.CreatedBy = import.meta.env.VITE_CREATED_BY;
+      }
+      return obj;
     },
   },
 });

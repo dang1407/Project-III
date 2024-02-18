@@ -1,0 +1,13 @@
+G:\Code\VisualStudio\WebAPI\WebAPI.Domain\bin\Debug\net8.0\WebAPI.Domain.deps.json
+G:\Code\VisualStudio\WebAPI\WebAPI.Domain\bin\Debug\net8.0\WebAPI.Domain.dll
+G:\Code\VisualStudio\WebAPI\WebAPI.Domain\bin\Debug\net8.0\WebAPI.Domain.pdb
+G:\Code\VisualStudio\WebAPI\WebAPI.Domain\obj\Debug\net8.0\WebAPI.Domain.Resource.EmployeeResource.resources
+G:\Code\VisualStudio\WebAPI\WebAPI.Domain\obj\Debug\net8.0\WebAPI.Domain.csproj.GenerateResource.cache
+G:\Code\VisualStudio\WebAPI\WebAPI.Domain\obj\Debug\net8.0\WebAPI.Domain.GeneratedMSBuildEditorConfig.editorconfig
+G:\Code\VisualStudio\WebAPI\WebAPI.Domain\obj\Debug\net8.0\WebAPI.Domain.AssemblyInfoInputs.cache
+G:\Code\VisualStudio\WebAPI\WebAPI.Domain\obj\Debug\net8.0\WebAPI.Domain.AssemblyInfo.cs
+G:\Code\VisualStudio\WebAPI\WebAPI.Domain\obj\Debug\net8.0\WebAPI.Domain.csproj.CoreCompileInputs.cache
+G:\Code\VisualStudio\WebAPI\WebAPI.Domain\obj\Debug\net8.0\WebAPI.Domain.dll
+G:\Code\VisualStudio\WebAPI\WebAPI.Domain\obj\Debug\net8.0\refint\WebAPI.Domain.dll
+G:\Code\VisualStudio\WebAPI\WebAPI.Domain\obj\Debug\net8.0\WebAPI.Domain.pdb
+G:\Code\VisualStudio\WebAPI\WebAPI.Domain\obj\Debug\net8.0\ref\WebAPI.Domain.dll

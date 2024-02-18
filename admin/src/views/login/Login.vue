@@ -46,17 +46,19 @@
         </div>
       </div>
     </div>
+
+    <BlurProgress v-show="isShowProgress"></BlurProgress>
   </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import { useUserStore } from "@/stores/UserStore";
 import { storeToRefs } from "pinia";
-
+import BlurProgress from "@/components/base/progress/BlurProgress.vue";
 const userStore = useUserStore();
-const { loginData } = storeToRefs(userStore);
+const { loginData, isShowProgress } = storeToRefs(userStore);
 const router = useRouter();
 
 async function login() {
@@ -65,6 +67,10 @@ async function login() {
     router.push("/");
   }
 }
+
+onMounted(async () => {
+  await userStore.loginAsync();
+});
 </script>
 
 <style lang="scss" scoped>

@@ -2,7 +2,12 @@
   <div class="input__text-box">
     <w-tooltip bottom v-if="tooltip">
       <template #activator="{ on }">
-        <div v-if="label" @click="focusInput" class="w-fit font-bold">
+        <div
+          v-on="on"
+          v-if="label"
+          @click="clickFocusInput"
+          class="w-fit font-bold"
+        >
           <span
             class="flex items-center w-fit"
             :class="labelStyle"
@@ -31,7 +36,11 @@
       }"
       :style="{ height: height }"
     >
-      <div class="icons__container" v-show="icon?.iconPosition == 'left'">
+      <div
+        class="icons__container"
+        v-show="icon?.iconPosition == 'left'"
+        @click="emitIconClick"
+      >
         <DIcon
           iconSize="20px"
           iconColor="#ccc"
@@ -42,6 +51,7 @@
         :tabindex="tabindex"
         ref="inputTextRef"
         :type="type"
+        class="pr-[8px]"
         :class="{
           input__disabled: disabled,
           input__text: icon?.iconPosition != 'left',
@@ -54,7 +64,11 @@
         @input="emitModelValue"
         v-model="inputValue"
       />
-      <div class="icons__container" v-show="icon?.iconPosition == 'right'">
+      <div
+        class="icons__container"
+        v-show="icon?.iconPosition == 'right'"
+        @click="emitIconClick"
+      >
         <DIcon
           iconSize="20px"
           :iconColor="icon?.iconColor || '#ccc'"
@@ -66,8 +80,8 @@
 </template>
 
 <script setup>
-import { ref, computed, onMounted } from "vue";
-const emits = defineEmits(["update:modelValue"]);
+import { ref, computed, onMounted, watch, nextTick } from "vue";
+const emits = defineEmits(["update:modelValue", "iconClick"]);
 const props = defineProps({
   activeColor: {
     type: String,
@@ -118,9 +132,6 @@ const props = defineProps({
   },
 });
 
-defineExpose({
-  focusInput,
-});
 const isActive = ref(false);
 const error = computed(() => ({
   isError: false,
@@ -132,15 +143,19 @@ const inputTextRef = ref(null);
 const isMissingInput = ref(props.isMissedInput);
 
 // Model giá trị thẻ input
-const inputValue = ref(props.initValue);
+const inputValue = ref(props.modelValue);
 
 /**
  * Binding dữ liệu với dữ liệu ở component cha
  * Created By: nkdang (24/10/2023)
  */
 function emitModelValue() {
-  console.log("update model value");
+  // console.log("update model value");
   emits("update:modelValue", inputValue.value);
+}
+
+function emitIconClick() {
+  emits("iconClick");
 }
 
 /**
@@ -177,12 +192,26 @@ function setTooltip(on) {
   }
 }
 
+function setInputValue(newValue) {
+  inputValue.value = newValue;
+}
+
+function clickFocusInput() {
+  inputTextRef.value.focus();
+}
+
+defineExpose({
+  setInputValue,
+  inputTextRef,
+});
+
 onMounted(() => {
   if (props.focus) {
-    setTimeout(() => {
-      inputTextRef.value.select();
-      inputTextRef.value.focus();
-    }, 200);
+    setTimeout(async () => {
+      await nextTick();
+      inputTextRef.value?.select();
+      inputTextRef.value?.focus();
+    }, 100);
     // console.log(inputTextRef);
   }
 });

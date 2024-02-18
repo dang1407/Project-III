@@ -18,7 +18,6 @@ export const useEmployeeStore = defineStore("employeeStore", {
         label: "Mã nhân viên",
         key: "EmployeeCode",
         width: "200px",
-        reasizable: true,
       },
       { label: "Họ và tên", key: "FullName", width: "200px" },
       { label: "Ngày sinh", key: "DateOfBirth", width: "220px" },
@@ -64,20 +63,31 @@ export const useEmployeeStore = defineStore("employeeStore", {
 
     // Thông tin form data nhân viên
     employeeFormData: {},
+
+    // Id của nhân viên để xóa
+    employeeDeleteId: "",
+    mode: "getAll",
   }),
   getters: {},
   actions: {
+    /**
+     * Hàm lấy thông tin nhân viên
+     */
     async getEmployeeDataAsync() {
+      let getUrl = "";
+      if (this.mode == "getAll") {
+        getUrl = `Employees?page=${this.page}&pageSize=${this.pageSize}`;
+      } else if (this.mode == "search") {
+        getUrl = `Employees?page=${this.page}&pageSize=${this.pageSize}&employeeProperty=${this.employeeProperty}`;
+      }
+
       try {
         this.notificationStore.showLoading();
-        const response = await axios.get(
-          `Employees?page=${this.page}&pageSize=${this.pageSize}&employeeProperty=${this.employeeProperty}`,
-          {
-            headers: {
-              Authorization: `Bearer ${this.userStore.accessToken}`,
-            },
-          }
-        );
+        const response = await axios.get(getUrl, {
+          headers: {
+            Authorization: `Bearer ${this.userStore.accessToken}`,
+          },
+        });
         this.employeesData = response.data.data;
         this.numEmployees = response.data.countEmployees;
         this.start = (this.page - 1) * this.pageSize + 1;
@@ -92,6 +102,76 @@ export const useEmployeeStore = defineStore("employeeStore", {
         this.notificationStore.showToastMessage(
           this.resourceLanguage.ToastMessage.CannotGetData
         );
+      }
+    },
+
+    goToGetAllMode() {
+      this.mode = "getAll";
+      this.getEmployeeDataAsync();
+    },
+
+    async goToSearchMode() {
+      this.mode = "search";
+      await this.getEmployeeDataAsync();
+    },
+
+    /**
+     * Hàm thêm mới một nhân viên
+     */
+    async createNewOneEmployee() {
+      try {
+        this.notificationStore.showLoading();
+        const formData = new FormData();
+        const response = await axios.post("/Employees", this.employeeFormData, {
+          headers: {
+            Authorization: `Bearer ${this.userStore.accessToken}`,
+          },
+        });
+        this.notificationStore.hideLoading();
+      } catch (error) {
+        console.log(error);
+        this.notificationStore.hideLoading();
+        this.notificationStore.showToastMessage(
+          this.resourceLanguage.ToastMessage.CannotCreateOne
+        );
+      }
+    },
+
+    /**
+     * Hàm lấy mã nhân viên mới
+     */
+    async getNewEmployeeCode() {
+      try {
+        this.notificationStore.showLoading();
+        const response = await axios.get("Employees/NewEmployeeCode", {
+          headers: {
+            Authorization: `Bearer ${this.userStore.accessToken}`,
+          },
+        });
+        this.employeeFormData.EmployeeCode = response.data;
+        this.notificationStore.hideLoading();
+        return response;
+      } catch (error) {
+        this.notificationStore.hideLoading();
+        this.notificationStore.showToastMessage(
+          this.resourceLanguage.ToastMessage.CannotGetNewEmployeeCode
+        );
+        console.log(error);
+      }
+    },
+
+    async deleteOneEmployee(employeeDeleteId) {
+      try {
+        this.notificationStore.showLoading();
+        const response = await axios.delete(`Employees/${employeeDeleteId}`, {
+          headers: {
+            Authorization: `Bearer ${this.userStore.accessToken}`,
+          },
+        });
+        this.notificationStore.hideLoading();
+      } catch (error) {
+        this.notificationStore.hideLoading();
+        console.log(error);
       }
     },
 
@@ -155,7 +235,12 @@ export const useEmployeeStore = defineStore("employeeStore", {
         this.notificationStore.showLoading();
         const response = await axios.get(
           `Employees/EmployeesExcel?page=${page}&pageSize=${pageSize}`,
-          { responseType: "blob" }
+          {
+            headers: {
+              Authorization: `Bearer ${this.userStore.accessToken}`,
+            },
+            responseType: "blob",
+          }
         );
         // Tạo một Blob từ dữ liệu trả về từ API
         const blob = new Blob([response.data]);

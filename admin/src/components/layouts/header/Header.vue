@@ -13,6 +13,9 @@
         <div class="nav__item">
           <router-link to="/employee">Nhân viên</router-link>
         </div>
+        <div class="nav__item">
+          <router-link to="/garage">Bãi đỗ xe</router-link>
+        </div>
         <div class="nav__item"><a href="">Sản phẩm</a></div>
       </nav>
 

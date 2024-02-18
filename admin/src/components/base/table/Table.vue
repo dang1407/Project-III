@@ -5,6 +5,7 @@
     :style="style"
     :fixed-headers="fixedHeaders"
     :pagination="pagination"
+    :loading="loading"
     resizable-columns
   >
     <template #header-label="{ label, index }">
@@ -14,7 +15,9 @@
     </template>
     <!-- Không có dữ liệu -->
     <template #no-data>
-      <slot name="no-data"> Không có dữ liệu! </slot>
+      <slot name="no-data" class="">
+        <div class="absolute left-[30%]">Không có dữ liệu</div>
+      </slot>
     </template>
 
     <template #item="{ item, index, select, classes }">
@@ -73,6 +76,9 @@ const props = defineProps({
   style: {},
   pagination: {
     type: Object,
+  },
+  loading: {
+    type: Boolean,
   },
 });
 </script>

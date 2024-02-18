@@ -11,6 +11,8 @@ const { isLogined } = storeToRefs(userStore);
 <template>
   <BaseLayout v-if="isLogined"></BaseLayout>
   <Login v-else></Login>
+
+  <!-- <BaseLayout></BaseLayout> -->
 </template>
 
 <style scoped></style>

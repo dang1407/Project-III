@@ -10,29 +10,38 @@
         </div>
       </div>
       <div class="dialog__content">
-        <div class="dialog__icon-box">
+        <!-- <div class="dialog__icon-box">
           <div class="icons" :class="dialogContent?.Icon"></div>
-        </div>
+          <DIcon
+            :iconName="dialogContent?.Icon"
+            :iconColor="dialogContent?.IconColor"
+          ></DIcon>
+        </div> -->
         <div class="dialog__mes" v-html="dialogContent?.Message"></div>
       </div>
 
       <div class="dialog__button-box">
         <div>
-          <DButton>Đồng ý</DButton>
-          <DButton bg-color="white">Hủy</DButton>
+          <DButton bg-color="white" @click="dialogStore.clickCancel()"
+            >Hủy</DButton
+          >
         </div>
-        <div
-          class="dialog__button--accept flex"
-          @click="dialogStore.clickAccept()"
-        ></div>
+        <div class="dialog__button--accept flex">
+          <DButton class="mr-[8px]" @click="dialogStore.clickNot()"
+            >Không</DButton
+          >
+          <DButton @click="dialogStore.clickAccept()">Đồng ý</DButton>
+        </div>
       </div>
     </div>
   </div>
 </template>
 
 <script setup>
+import { ref } from "vue";
 import { useNotificationStore } from "@/stores/NotificationStore";
 import { storeToRefs } from "pinia";
+
 const dialogStore = useNotificationStore();
 const { dialogContent } = storeToRefs(dialogStore);
 </script>
